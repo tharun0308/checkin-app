@@ -39,6 +39,10 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
   })
   if (!res.ok) {
+    if (res.status === 401 && typeof window !== "undefined") {
+      removeToken()
+      window.location.href = '/login'
+    }
     const text = await res.text()
     throw new Error(`API ${res.status}: ${text}`)
   }
