@@ -5,7 +5,7 @@
  * with try/catch.
  */
 
-const BASE = process.env.NEXT_PUBLIC_API_URL || '/api'
+const BASE = '/api'
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
