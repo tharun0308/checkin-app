@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Base tokens                                                          */
+/* ------------------------------------------------------------------ */
+:root {
+  --color-bg-deep:    #0f1623;
+  --color-bg-card:    #182030;
+  --color-bg-raised:  #1f2d44;
+  --color-bg-subtle:  #2a3d58;
+
+  --color-gold:       #d4a853;
+  --color-gold-light: #e4be7a;
+  --color-gold-dark:  #b8883a;
+
+  --color-sage:       #7aab8a;
+  --color-sage-light: #9ec4ac;
+  --color-sage-dark:  #5a8c6a;
+
+  --color-coral:      #c4806a;
+  --color-coral-light:#d9a090;
+
+  --color-text:       #f0e8da;
+  --color-text-muted: #c8bcac;
+  --color-text-faint: #8a7e70;
+
+  --radius-card: 1.25rem;
+  --radius-btn:  0.75rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reset / base                                                         */
+/* ------------------------------------------------------------------ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--color-bg-deep);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scrollbar (subtle on desktop)                                        */
+/* ------------------------------------------------------------------ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-bg-subtle); border-radius: 99px; }
+
+/* ------------------------------------------------------------------ */
+/* Utility classes not covered by Tailwind theme extension             */
+/* ------------------------------------------------------------------ */
+.card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+}
+
+.card-raised {
+  background: var(--color-bg-raised);
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.btn-primary {
+  background: var(--color-gold);
+  color: #0f1623;
+  font-weight: 600;
+  border-radius: var(--radius-btn);
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+}
+.btn-primary:hover {
+  background: var(--color-gold-light);
+  box-shadow: 0 4px 24px rgba(212, 168, 83, 0.3);
+}
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-btn);
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.btn-ghost:hover {
+  border-color: rgba(255,255,255,0.25);
+  color: var(--color-text);
+}
+
+/* Progress bar fill */
+.progress-track {
+  background: var(--color-bg-subtle);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill-sage {
+  background: var(--color-sage);
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.progress-fill-coral {
+  background: var(--color-coral);
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dot for calendar */
+.cal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  margin: 0 auto;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 22, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+  padding: 0 1rem 1.5rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-sheet {
+  width: 100%;
+  max-width: 420px;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Settings text input */
+.settings-input {
+  background: var(--color-bg-raised);
+  color: var(--color-text);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.18s ease;
+  font-family: inherit;
+}
+.settings-input:focus {
+  border-color: var(--color-gold);
+}
+.settings-input::placeholder {
+  color: var(--color-text-faint);
+}

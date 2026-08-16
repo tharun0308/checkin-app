@@ -1,0 +1,37 @@
+services:
+  # ------------------------------------
+  # 1. FastAPI Backend Service
+  # ------------------------------------
+  - type: web
+    name: checkin-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt && alembic upgrade head"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+    rootDir: backend
+    # Note: Render Web Services have ephemeral filesystems. 
+    # Because you are using SQLite, your database will reset on every deploy.
+    # To keep data permanently, you can add a 'disk' (requires a paid Render plan):
+    # disk:
+    #   name: sqlite-data
+    #   mountPath: /opt/render/project/src/backend
+    #   sizeGB: 1
+
+  # ------------------------------------
+  # 2. Next.js Frontend Service
+  # ------------------------------------
+  - type: web
+    name: checkin-frontend
+    env: node
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm start"
+    rootDir: frontend
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        # This automatically points the frontend to your backend service!
+        fromService:
+          type: web
+          name: checkin-backend
+          envVarKey: RENDER_EXTERNAL_URL
