@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Integer, Text, DateTime, func
+from sqlalchemy import Integer, Text, DateTime, Boolean, func
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database import Base
 
@@ -12,5 +12,5 @@ class User(Base):
     email: Mapped[str] = mapped_column(Text, nullable=True)
     name: Mapped[str] = mapped_column(Text, nullable=False, default="Guest")
     password_hash: Mapped[str | None] = mapped_column(Text, nullable=True)
-    is_verified: Mapped[bool] = mapped_column(Integer, nullable=False, default=False)
+    is_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
