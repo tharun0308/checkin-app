@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from app.models.entry import Entry
 from app.models.settings import Settings
+from app.models.user import User
 
 
 DEFAULT_USER_ID = 1
@@ -127,26 +128,28 @@ def get_streak_stats(db: Session, user_id: int = DEFAULT_USER_ID) -> dict:
         for d in all_entry_dates_q
     }
 
+    # Fetch user to get creation date
+    user = db.execute(select(User).where(User.id == user_id)).scalar_one_or_none()
+    created_date = user.created_at.date() if user and user.created_at else today
+
     # -- Current streak --
     # Start counting backwards from today (or yesterday if today has an entry)
     anchor = today if today not in entry_dates else today - timedelta(days=1)
     current_streak = 0
     cursor = anchor
     while cursor not in entry_dates:
+        # Don't give streak credit for days before the account existed
+        if cursor < created_date:
+            break
         current_streak += 1
         cursor -= timedelta(days=1)
-        # Safety: don't go back further than 3 years
-        if (anchor - cursor).days > 1095:
-            break
 
     # -- Longest streak --
-    # If there are no entries ever, the entire time since signup is a streak.
-    # We cap history at 365 days for performance.
     if not entry_dates:
         longest_streak = current_streak
     else:
         first_entry = min(entry_dates)
-        history_start = max(first_entry - timedelta(days=1), today - timedelta(days=365))
+        history_start = min(first_entry, created_date)
 
         longest = 0
         run = 0
