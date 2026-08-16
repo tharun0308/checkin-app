@@ -19,17 +19,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.alter_column('users', 'is_verified',
-               existing_type=sa.Integer(),
-               type_=sa.Boolean(),
-               existing_nullable=False,
-               existing_server_default='0',
-               postgresql_using='is_verified::integer::boolean')
+    op.drop_column('users', 'is_verified')
+    op.add_column('users', sa.Column('is_verified', sa.Boolean(), server_default=sa.text('false'), nullable=False))
 
 def downgrade() -> None:
-    op.alter_column('users', 'is_verified',
-               existing_type=sa.Boolean(),
-               type_=sa.Integer(),
-               existing_nullable=False,
-               existing_server_default='0',
-               postgresql_using='is_verified::integer')
+    op.drop_column('users', 'is_verified')
+    op.add_column('users', sa.Column('is_verified', sa.Integer(), server_default=sa.text('0'), nullable=False))
