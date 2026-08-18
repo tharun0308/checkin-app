@@ -19,8 +19,9 @@ export default function HomePage() {
       setWeekStats(w)
       setStreakStats(s)
       setError(null)
-    } catch {
-      setError("Couldn't connect to the backend. Is it running?")
+    } catch (err: any) {
+      console.error(err)
+      setError(err.message || "Couldn't connect to the backend. Is it running?")
     } finally {
       setLoading(false)
     }
